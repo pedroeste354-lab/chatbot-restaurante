@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carta — Palomo Z.</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .page {
+      background: #fff;
+      width: 794px;
+      min-height: 1123px;
+      padding: 60px 80px 80px;
+      position: relative;
+    }
+
+    /* ── CORNER DECORATIONS ── */
+    .corner {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+    }
+    .corner-tl { top: 24px; left: 24px; }
+    .corner-tr { top: 24px; right: 24px; transform: scaleX(-1); }
+    .corner-bl { bottom: 24px; left: 24px; transform: scaleY(-1); }
+    .corner-br { bottom: 24px; right: 24px; transform: scale(-1); }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      padding-bottom: 32px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid #ddd;
+    }
+    .header-seal {
+      margin: 0 auto 14px;
+      display: block;
+    }
+    .header-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #111;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .header-city {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: #555;
+      text-transform: uppercase;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+    .header-diamond {
+      margin: 20px auto 0;
+      display: block;
+    }
+
+    /* ── SECTION ── */
+    .section { margin-bottom: 36px; }
+    .section-title {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .section-title-es {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #111;
+      text-transform: uppercase;
+    }
+    .section-title-en {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #888;
+      text-transform: uppercase;
+    }
+    .section-subtitle {
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: #999;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+
+    .dish { margin-bottom: 20px; }
+    .dish-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #111;
+      line-height: 1.3;
+    }
+    .dish-name-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      font-style: italic;
+      color: #777;
+      line-height: 1.4;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 28px 0;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+    .footer p {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: #aaa;
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .page { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Esquinas decorativas -->
+  <svg class="corner corner-tl" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 100 L10 10 L100 10" stroke="#bbb" stroke-width="1.2" fill="none"/>
+    <path d="M20 100 L20 20 L100 20" stroke="#bbb" stroke-width="0.6" fill="none"/>
+    <line x1="10" y1="10" x2="1" y2="1" stroke="#bbb" stroke-width="1"/>
+    <line x1="10" y1="10" x2="19" y2="1" stroke="#bbb" stroke-width="1"/>
+    <line x1="10" y1="10" x2="1" y2="19" stroke="#bbb" stroke-width="1"/>
+  </svg>
+  <svg class="corner corner-tr" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 100 L10 10 L100 10" stroke="#bbb" stroke-width="1.2" fill="none"/>
+    <path d="M20 100 L20 20 L100 20" stroke="#bbb" stroke-width="0.6" fill="none"/>
+    <line x1="10" y1="10" x2="1" y2="1" stroke="#bbb" stroke-width="1"/>
+    <line x1="10" y1="10" x2="19" y2="1" stroke="#bbb" stroke-width="1"/>
+    <line x1="10" y1="10" x2="1" y2="19" stroke="#bbb" stroke-width="1"/>
+  </svg>
+  <svg class="corner corner-bl" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 100 L10 10 L100 10" stroke="#bbb" stroke-width="1.2" fill="none"/>
+    <path d="M20 100 L20 20 L100 20" stroke="#bbb" stroke-width="0.6" fill="none"/>
+    <line x1="10" y1="10" x2="1" y2="1" stroke="#bbb" stroke-width="1"/>
+    <line x1="10" y1="10" x2="19" y2="1" stroke="#bbb" stroke-width="1"/>
+    <line x1="10" y1="10" x2="1" y2="19" stroke="#bbb" stroke-width="1"/>
+  </svg>
+  <svg class="corner corner-br" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 100 L10 10 L100 10" stroke="#bbb" stroke-width="1.2" fill="none"/>
+    <path d="M20 100 L20 20 L100 20" stroke="#bbb" stroke-width="0.6" fill="none"/>
+    <line x1="10" y1="10" x2="1" y2="1" stroke="#bbb" stroke-width="1"/>
+    <line x1="10" y1="10" x2="19" y2="1" stroke="#bbb" stroke-width="1"/>
+    <line x1="10" y1="10" x2="1" y2="19" stroke="#bbb" stroke-width="1"/>
+  </svg>
+
+  <!-- CABECERA -->
+  <header class="header">
+    <svg class="header-seal" width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="36" cy="36" r="34" stroke="#111" stroke-width="1.2"/>
+      <circle cx="36" cy="36" r="28" stroke="#111" stroke-width="0.6"/>
+      <text x="36" y="30" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5" letter-spacing="3" fill="#111">EST.</text>
+      <text x="36" y="38" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7" letter-spacing="2" fill="#111" font-weight="600">P·Z</text>
+      <text x="36" y="47" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5" letter-spacing="3" fill="#111">2019</text>
+      <line x1="20" y1="42" x2="52" y2="42" stroke="#111" stroke-width="0.5"/>
+      <line x1="22" y1="30" x2="50" y2="30" stroke="#111" stroke-width="0.5"/>
+    </svg>
+    <div class="header-name">Palomo Z.</div>
+    <div class="header-city">Madrid</div>
+    <svg class="header-diamond" width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="20" x2="55" y2="20" stroke="#bbb" stroke-width="0.8"/>
+      <line x1="105" y1="20" x2="160" y2="20" stroke="#bbb" stroke-width="0.8"/>
+      <polygon points="80,5 68,20 80,35 92,20" stroke="#111" stroke-width="1" fill="none"/>
+      <polygon points="80,10 71,20 80,30 89,20" stroke="#bbb" stroke-width="0.6" fill="none"/>
+    </svg>
+  </header>
+
+  <!-- ENTRANTES -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-title-es">Entrantes</span>
+      <span class="section-title-en">| Starters</span>
+    </div>
+    <p class="section-subtitle">A elegir uno entre las opciones · Choose one from the options</p>
+
+    <div class="dish">
+      <div class="dish-name">Croquetas de jamón ibérico con alioli de miel</div>
+      <div class="dish-name-en">Iberian ham croquettes with honey aioli</div>
+    </div>
+    <div class="dish">
+      <div class="dish-name">Burrata con tomates de temporada, albahaca y aceite de arbequina</div>
+      <div class="dish-name-en">Burrata with seasonal tomatoes, basil and arbequina olive oil</div>
+    </div>
+    <div class="dish">
+      <div class="dish-name">Carpaccio de ternera con alcaparras, parmesano y vinagreta de mostaza</div>
+      <div class="dish-name-en">Beef carpaccio with capers, parmesan and mustard vinaigrette</div>
+    </div>
+    <div class="dish">
+      <div class="dish-name">Gazpacho de remolacha con crema de queso y crujiente de pan</div>
+      <div class="dish-name-en">Beetroot gazpacho with cheese cream and crispy bread</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- PRINCIPALES -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-title-es">Principales</span>
+      <span class="section-title-en">| Main Courses</span>
+    </div>
+    <p class="section-subtitle">A elegir uno entre las opciones · Choose one from the options</p>
+
+    <div class="dish">
+      <div class="dish-name">Lubina a la sal con verduras de temporada y salsa de azafrán</div>
+      <div class="dish-name-en">Salt-baked sea bass with seasonal vegetables and saffron sauce</div>
+    </div>
+    <div class="dish">
+      <div class="dish-name">Solomillo de ternera con puré de patata trufado y reducción de Oporto</div>
+      <div class="dish-name-en">Beef tenderloin with truffle mashed potato and Port wine reduction</div>
+    </div>
+    <div class="dish">
+      <div class="dish-name">Presa ibérica a la brasa con chimichurri y patatas panaderas</div>
+      <div class="dish-name-en">Grilled Iberian pork shoulder with chimichurri and baker's potatoes</div>
+    </div>
+    <div class="dish">
+      <div class="dish-name">Risotto de setas silvestres con parmesano y aceite de trufa negra</div>
+      <div class="dish-name-en">Wild mushroom risotto with parmesan and black truffle oil</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- POSTRES -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-title-es">Postres</span>
+      <span class="section-title-en">| Desserts</span>
+    </div>
+    <p class="section-subtitle">A elegir uno entre las opciones · Choose one from the options</p>
+
+    <div class="dish">
+      <div class="dish-name">Coulant de chocolate con helado de vainilla de Madagascar</div>
+      <div class="dish-name-en">Chocolate fondant with Madagascar vanilla ice cream</div>
+    </div>
+    <div class="dish">
+      <div class="dish-name">Tarta de queso al horno con coulis de frutos rojos</div>
+      <div class="dish-name-en">Baked cheesecake with red berry coulis</div>
+    </div>
+    <div class="dish">
+      <div class="dish-name">Crema catalana con caramelo tostado y helado de canela</div>
+      <div class="dish-name-en">Crème brûlée with burnt caramel and cinnamon ice cream</div>
+    </div>
+  </div>
+
+  <!-- PIE -->
+  <footer class="footer">
+    <p>Este menú puede contener alérgenos · This menu may contain allergens</p>
+    <p>Palomo Z. · Madrid · Todos los derechos reservados</p>
+  </footer>
+
+</div>
+</body>
+</html>
