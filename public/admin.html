@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Restaurante</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Inter:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0d0d0d; --dark: #111; --dark2: #181818; --dark3: #222;
+      --red: #e63946; --red-d: #b52d38; --cream: #f1faee; --yellow: #ffd60a;
+      --text: #888; --text-l: #ccc; --border: rgba(255,255,255,0.07);
+    }
+    body { background: var(--black); color: var(--text-l); font-family: 'Inter', sans-serif; font-size: 0.9rem; min-height: 100vh; }
+    h1, h2, h3 { font-family: 'Fraunces', serif; color: var(--cream); }
+
+    /* LOGIN */
+    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-box { background: var(--dark); border: 1px solid var(--border); border-radius: 8px; padding: 2.5rem; width: 100%; max-width: 360px; }
+    .login-box h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .login-sub { color: var(--text); font-size: 0.85rem; margin-bottom: 2rem; }
+    .login-box input { width: 100%; background: var(--dark3); border: 1px solid var(--border); border-radius: 4px; padding: 0.75rem 1rem; color: var(--cream); font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; margin-bottom: 1rem; transition: border-color 0.2s; }
+    .login-box input:focus { border-color: var(--red); }
+    #login-error { color: var(--red); font-size: 0.8rem; margin-bottom: 1rem; display: none; }
+
+    /* ADMIN PANEL */
+    #admin-panel { display: none; }
+    .admin-header { background: var(--dark); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .admin-header h1 { font-size: 1.2rem; }
+    .admin-header a { font-size: 0.8rem; color: var(--text); text-decoration: none; transition: color 0.2s; }
+    .admin-header a:hover { color: var(--cream); }
+
+    .admin-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 2rem; background: var(--dark2); }
+    .admin-tab { background: none; border: none; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 500; color: var(--text); padding: 1rem 1.5rem; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.2s, border-color 0.2s; }
+    .admin-tab.active { color: var(--cream); border-color: var(--red); }
+    .admin-tab:hover:not(.active) { color: var(--text-l); }
+
+    .admin-content { padding: 2rem; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* FORMS */
+    .form-section { background: var(--dark); border: 1px solid var(--border); border-radius: 6px; padding: 1.75rem; margin-bottom: 1.5rem; }
+    .form-section h3 { font-size: 1rem; margin-bottom: 1.25rem; color: var(--cream); border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); }
+    .form-group input, .form-group textarea, .form-group select { background: var(--dark3); border: 1px solid var(--border); border-radius: 4px; padding: 0.65rem 0.9rem; color: var(--cream); font-family: 'Inter', sans-serif; font-size: 0.88rem; outline: none; transition: border-color 0.2s; width: 100%; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--red); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    /* BUTTONS */
+    .btn { padding: 0.6rem 1.5rem; border-radius: 2rem; font-size: 0.82rem; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; border: none; transition: background 0.2s; }
+    .btn-primary { background: var(--red); color: #fff; }
+    .btn-primary:hover { background: var(--red-d); }
+    .btn-secondary { background: var(--dark3); color: var(--text-l); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--dark2); }
+    .btn-danger { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-danger:hover { border-color: var(--red); color: var(--red); }
+    .save-msg { font-size: 0.8rem; color: var(--red); margin-left: 1rem; display: none; }
+
+    /* PLATOS */
+    .plato-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .plato-row input { flex: 1; }
+    .plato-row .precio-input { width: 100px; flex: unset; }
+    .plato-row img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); }
+    .foto-label { font-size: 0.75rem; color: var(--text); cursor: pointer; border: 1px solid var(--border); border-radius: 4px; padding: 0.4rem 0.75rem; white-space: nowrap; transition: border-color 0.2s; }
+    .foto-label:hover { border-color: var(--red); color: var(--cream); }
+
+    /* TABLES */
+    .data-table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th { text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-l); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--dark2); }
+    .estado-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.65rem; border-radius: 2rem; font-size: 0.75rem; font-weight: 500; }
+    .estado-pendiente { background: rgba(255,214,10,0.1); color: var(--yellow); }
+    .estado-preparando { background: rgba(230,57,70,0.1); color: var(--red); }
+    .estado-listo { background: rgba(100,200,100,0.1); color: #6dc47b; }
+    .estado-entregado, .estado-completada { background: rgba(100,200,100,0.1); color: #6dc47b; }
+    .estado-pagado { background: rgba(100,200,100,0.1); color: #6dc47b; }
+    .estado-cancelada { background: rgba(255,100,100,0.1); color: #f87171; }
+    select.estado-select { background: var(--dark3); border: 1px solid var(--border); border-radius: 4px; padding: 0.3rem 0.5rem; color: var(--cream); font-family: 'Inter', sans-serif; font-size: 0.8rem; outline: none; cursor: pointer; }
+    .table-empty { text-align: center; padding: 3rem; color: var(--text); }
+    .refresh-btn { font-size: 0.78rem; color: var(--text); background: none; border: 1px solid var(--border); border-radius: 2rem; padding: 0.3rem 0.85rem; cursor: pointer; margin-left: 1rem; transition: color 0.2s; }
+    .refresh-btn:hover { color: var(--cream); }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h2>Panel Admin</h2>
+    <p class="login-sub">Accede con tu contraseña de administrador</p>
+    <div id="login-error">Contraseña incorrecta</div>
+    <input type="password" id="login-password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')login()" />
+    <button class="btn btn-primary" style="width:100%" onclick="login()">Entrar →</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="admin-header">
+    <h1>Admin</h1>
+    <a href="/" target="_blank">← Ver web</a>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchAdminTab('info', this)">Información</button>
+    <button class="admin-tab" onclick="switchAdminTab('carta', this)">Carta</button>
+    <button class="admin-tab" onclick="switchAdminTab('nosotros', this)">Nosotros</button>
+    <button class="admin-tab" onclick="switchAdminTab('reservas', this)">Reservas</button>
+    <button class="admin-tab" onclick="switchAdminTab('pedidos', this)">Pedidos</button>
+    <button class="admin-tab" onclick="switchAdminTab('clientes', this)">Clientes</button>
+    <button class="admin-tab" onclick="switchAdminTab('password', this)">Contraseña</button>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- TAB INFO -->
+    <div class="tab-pane active" id="pane-info">
+      <div class="form-section">
+        <h3>Datos del restaurante</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>Nombre</label><input id="f-nombre" /></div>
+          <div class="form-group"><label>Tipo de cocina</label><input id="f-cocina" /></div>
+          <div class="form-group"><label>Dirección</label><input id="f-direccion" /></div>
+          <div class="form-group"><label>Teléfono</label><input id="f-telefono" /></div>
+          <div class="form-group"><label>WhatsApp</label><input id="f-whatsapp" /></div>
+          <div class="form-group"><label>Precio medio</label><input id="f-precio_medio" /></div>
+          <div class="form-group full"><label>Horario</label><input id="f-horario" /></div>
+          <div class="form-group full"><label>Parking</label><input id="f-parking" /></div>
+          <div class="form-group">
+            <label>Terraza</label>
+            <select id="f-terraza"><option value="false">No</option><option value="true">Sí</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <h3>Menú del día</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>Precio</label><input id="f-menu-precio" /></div>
+          <div class="form-group"><label>Días</label><input id="f-menu-dias" /></div>
+          <div class="form-group full"><label>Descripción</label><input id="f-menu-desc" /></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <h3>Google Maps</h3>
+        <div class="form-group"><label>URL del embed</label><input id="f-maps" placeholder="https://www.google.com/maps/embed?pb=..." /></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;margin-top:1.5rem">
+        <button class="btn btn-primary" onclick="save()">Guardar cambios</button>
+        <span class="save-msg" id="save-msg">Guardado ✓</span>
+      </div>
+    </div>
+
+    <!-- TAB CARTA -->
+    <div class="tab-pane" id="pane-carta">
+      <div class="form-section">
+        <h3>Entrantes</h3>
+        <div id="list-entrantes"></div>
+        <button class="btn btn-secondary" style="margin-top:0.75rem" onclick="addPlato('entrantes')">+ Añadir entrante</button>
+      </div>
+      <div class="form-section">
+        <h3>Principales</h3>
+        <div id="list-principales"></div>
+        <button class="btn btn-secondary" style="margin-top:0.75rem" onclick="addPlato('principales')">+ Añadir principal</button>
+      </div>
+      <div class="form-section">
+        <h3>Postres</h3>
+        <div id="list-postres"></div>
+        <button class="btn btn-secondary" style="margin-top:0.75rem" onclick="addPlato('postres')">+ Añadir postre</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;margin-top:1.5rem">
+        <button class="btn btn-primary" onclick="save()">Guardar carta</button>
+        <span class="save-msg" id="save-msg-carta">Guardado ✓</span>
+      </div>
+    </div>
+
+    <!-- TAB NOSOTROS -->
+    <div class="tab-pane" id="pane-nosotros">
+      <div class="form-section">
+        <h3>Sobre el restaurante</h3>
+        <div class="form-group" style="margin-bottom:1rem"><label>Descripción</label><textarea id="f-nosotros" rows="5"></textarea></div>
+        <div class="form-grid">
+          <div class="form-group"><label>Años de experiencia</label><input id="f-anos" /></div>
+          <div class="form-group"><label>Valoración (ej: 4.8)</label><input id="f-valoracion" /></div>
+          <div class="form-group"><label>Nº valoraciones</label><input id="f-num_valoraciones" /></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;margin-top:1.5rem">
+        <button class="btn btn-primary" onclick="save()">Guardar</button>
+        <span class="save-msg" id="save-msg-nos">Guardado ✓</span>
+      </div>
+    </div>
+
+    <!-- TAB RESERVAS -->
+    <div class="tab-pane" id="pane-reservas">
+      <div style="display:flex;align-items:center;margin-bottom:1.5rem">
+        <h2 style="font-size:1.2rem">Reservas</h2>
+        <button class="refresh-btn" onclick="loadReservas()">↺ Actualizar</button>
+      </div>
+      <div class="form-section">
+        <div class="data-table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Nombre</th><th>Fecha</th><th>Hora</th><th>Personas</th><th>Nota</th><th>Estado</th><th>Recibida</th></tr></thead>
+            <tbody id="tbody-reservas"><tr><td colspan="8" class="table-empty">Cargando...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB PEDIDOS -->
+    <div class="tab-pane" id="pane-pedidos">
+      <div style="display:flex;align-items:center;margin-bottom:1.5rem">
+        <h2 style="font-size:1.2rem">Pedidos</h2>
+        <button class="refresh-btn" onclick="loadPedidos()">↺ Actualizar</button>
+      </div>
+      <div class="form-section">
+        <div class="data-table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Items</th><th>Total</th><th>Pago</th><th>Estado</th><th>Fecha</th></tr></thead>
+            <tbody id="tbody-pedidos"><tr><td colspan="8" class="table-empty">Cargando...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CLIENTES -->
+    <div class="tab-pane" id="pane-clientes">
+      <div style="display:flex;align-items:center;margin-bottom:1.5rem">
+        <h2 style="font-size:1.2rem">Suscriptores</h2>
+        <button class="refresh-btn" onclick="loadClientes()">↺ Actualizar</button>
+      </div>
+      <div class="form-section">
+        <div class="data-table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Email</th><th>Nombre</th><th>Fecha alta</th></tr></thead>
+            <tbody id="tbody-clientes"><tr><td colspan="4" class="table-empty">Cargando...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTRASEÑA -->
+    <div class="tab-pane" id="pane-password">
+      <div class="form-section" style="max-width:400px">
+        <h3>Cambiar contraseña</h3>
+        <div class="form-group" style="margin-bottom:1rem"><label>Contraseña actual</label><input type="password" id="pw-actual" /></div>
+        <div class="form-group" style="margin-bottom:1rem"><label>Nueva contraseña (mín. 8 caracteres)</label><input type="password" id="pw-nueva" /></div>
+        <div class="form-group" style="margin-bottom:1.5rem"><label>Repetir nueva</label><input type="password" id="pw-repetir" /></div>
+        <button class="btn btn-primary" onclick="changePassword()">Cambiar contraseña</button>
+        <div id="pw-msg" style="margin-top:0.75rem;font-size:0.82rem;display:none"></div>
+      </div>
+    </div>
+
+  </div><!-- end admin-content -->
+</div><!-- end admin-panel -->
+
+<script>
+let adminPassword = '';
+let configData = {};
+
+// ── AUTH ──
+async function login() {
+  const pw = document.getElementById('login-password').value;
+  if (!pw) return;
+  const res = await fetch('/admin/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
+  const data = await res.json();
+  if (data.ok) {
+    adminPassword = pw;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    loadConfig();
+    loadReservas();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+// ── TABS ──
+function switchAdminTab(name, btn) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pane-' + name).classList.add('active');
+  if (name === 'reservas') loadReservas();
+  if (name === 'pedidos') loadPedidos();
+  if (name === 'clientes') loadClientes();
+}
+
+// ── LOAD CONFIG ──
+async function loadConfig() {
+  const res = await fetch('/api/config');
+  configData = await res.json();
+  fillForm();
+}
+
+function fillForm() {
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val != null) el.value = val; };
+  set('f-nombre', configData.nombre);
+  set('f-cocina', configData.cocina);
+  set('f-direccion', configData.direccion);
+  set('f-telefono', configData.telefono);
+  set('f-whatsapp', configData.whatsapp);
+  set('f-precio_medio', configData.precio_medio);
+  set('f-horario', configData.horario);
+  set('f-parking', configData.parking);
+  set('f-terraza', configData.terraza ? 'true' : 'false');
+  set('f-maps', configData.google_maps_embed);
+  set('f-nosotros', configData.nosotros);
+  set('f-anos', configData.anos);
+  set('f-valoracion', configData.valoracion);
+  set('f-num_valoraciones', configData.num_valoraciones);
+  if (configData.menu_dia) {
+    set('f-menu-precio', configData.menu_dia.precio);
+    set('f-menu-dias', configData.menu_dia.dias);
+    set('f-menu-desc', configData.menu_dia.descripcion);
+  }
+  renderPlatos('entrantes');
+  renderPlatos('principales');
+  renderPlatos('postres');
+}
+
+// ── SAVE ──
+async function save() {
+  const payload = {
+    password: adminPassword,
+    nombre: document.getElementById('f-nombre').value,
+    cocina: document.getElementById('f-cocina').value,
+    direccion: document.getElementById('f-direccion').value,
+    telefono: document.getElementById('f-telefono').value,
+    whatsapp: document.getElementById('f-whatsapp').value,
+    precio_medio: document.getElementById('f-precio_medio').value,
+    horario: document.getElementById('f-horario').value,
+    parking: document.getElementById('f-parking').value,
+    terraza: document.getElementById('f-terraza').value === 'true',
+    google_maps_embed: document.getElementById('f-maps').value,
+    nosotros: document.getElementById('f-nosotros').value,
+    anos: document.getElementById('f-anos').value,
+    valoracion: document.getElementById('f-valoracion').value,
+    num_valoraciones: document.getElementById('f-num_valoraciones').value,
+    menu_dia: {
+      precio: document.getElementById('f-menu-precio').value,
+      dias: document.getElementById('f-menu-dias').value,
+      descripcion: document.getElementById('f-menu-desc').value,
+    },
+    carta: {
+      entrantes: getPlatos('entrantes'),
+      principales: getPlatos('principales'),
+      postres: getPlatos('postres'),
+    },
+  };
+  await fetch('/admin/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  ['save-msg', 'save-msg-carta', 'save-msg-nos'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.display = 'inline'; setTimeout(() => el.style.display = 'none', 2500); }
+  });
+}
+
+// ── CARTA ──
+function renderPlatos(tipo) {
+  const list = document.getElementById('list-' + tipo);
+  const platos = (configData.carta || {})[tipo] || [];
+  list.innerHTML = '';
+  platos.forEach((p, i) => addPlatoRow(tipo, p, i));
+}
+
+function addPlato(tipo) {
+  if (!configData.carta) configData.carta = {};
+  if (!configData.carta[tipo]) configData.carta[tipo] = [];
+  configData.carta[tipo].push({ nombre: '', precio: '', descripcion: '' });
+  renderPlatos(tipo);
+}
+
+function addPlatoRow(tipo, plato, index) {
+  const list = document.getElementById('list-' + tipo);
+  const div = document.createElement('div');
+  div.className = 'plato-row';
+  div.dataset.tipo = tipo;
+  div.dataset.index = index;
+  const fotoHtml = plato.foto
+    ? `<img src="${plato.foto}" alt="" />`
+    : `<label class="foto-label" title="Subir foto">📷<input type="file" accept="image/*" style="display:none" onchange="uploadFoto(this, '${tipo}', ${index})" /></label>`;
+  div.innerHTML = `
+    <input placeholder="Nombre del plato" value="${plato.nombre || ''}" oninput="updatePlato('${tipo}',${index},'nombre',this.value)" />
+    <input class="precio-input" placeholder="Precio" value="${plato.precio || ''}" oninput="updatePlato('${tipo}',${index},'precio',this.value)" />
+    <input placeholder="Descripción (opcional)" value="${plato.descripcion || ''}" oninput="updatePlato('${tipo}',${index},'descripcion',this.value)" />
+    ${fotoHtml}
+    <button class="btn btn-danger" onclick="removePlato('${tipo}',${index})">✕</button>
+  `;
+  list.appendChild(div);
+}
+
+function updatePlato(tipo, index, field, value) {
+  if (configData.carta?.[tipo]?.[index]) configData.carta[tipo][index][field] = value;
+}
+
+function removePlato(tipo, index) {
+  configData.carta[tipo].splice(index, 1);
+  renderPlatos(tipo);
+}
+
+function getPlatos(tipo) {
+  return (configData.carta || {})[tipo] || [];
+}
+
+async function uploadFoto(input, tipo, index) {
+  if (!input.files[0]) return;
+  const fd = new FormData();
+  fd.append('foto', input.files[0]);
+  fd.append('password', adminPassword);
+  const res = await fetch('/admin/plato/foto', { method: 'POST', body: fd });
+  const { url } = await res.json();
+  if (url) {
+    updatePlato(tipo, index, 'foto', url);
+    renderPlatos(tipo);
+  }
+}
+
+// ── RESERVAS ──
+async function loadReservas() {
+  const res = await fetch('/admin/reservas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: adminPassword }) });
+  const reservas = await res.json();
+  const tbody = document.getElementById('tbody-reservas');
+  if (!reservas.length) { tbody.innerHTML = '<tr><td colspan="8" class="table-empty">Sin reservas</td></tr>'; return; }
+  tbody.innerHTML = reservas.map(r => `
+    <tr>
+      <td>#${r.id}</td>
+      <td>${r.nombre}</td>
+      <td>${r.fecha}</td>
+      <td>${r.hora}</td>
+      <td>${r.personas}</td>
+      <td>${r.nota || '—'}</td>
+      <td>
+        <select class="estado-select" onchange="updateReservaEstado(${r.id}, this.value)">
+          ${['pendiente','confirmada','completada','cancelada'].map(e => `<option value="${e}" ${r.estado === e ? 'selected' : ''}>${e}</option>`).join('')}
+        </select>
+      </td>
+      <td>${new Date(r.created_at).toLocaleDateString('es-ES')}</td>
+    </tr>
+  `).join('');
+}
+
+async function updateReservaEstado(id, estado) {
+  await fetch('/admin/reservas/estado', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: adminPassword, id, estado }) });
+}
+
+// ── PEDIDOS ──
+async function loadPedidos() {
+  const res = await fetch('/admin/pedidos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: adminPassword }) });
+  const pedidos = await res.json();
+  const tbody = document.getElementById('tbody-pedidos');
+  if (!pedidos.length) { tbody.innerHTML = '<tr><td colspan="8" class="table-empty">Sin pedidos</td></tr>'; return; }
+  tbody.innerHTML = pedidos.map(p => {
+    const items = Array.isArray(p.items) ? p.items.map(i => `${i.nombre} x${i.cantidad}`).join(', ') : '';
+    return `
+      <tr>
+        <td>#${p.id}</td>
+        <td>${p.cliente_nombre}<br><small style="color:var(--text)">${p.cliente_email}</small></td>
+        <td>${p.tipo}</td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${items}</td>
+        <td style="color:var(--yellow)">${p.total}€</td>
+        <td>${p.pago}</td>
+        <td>
+          <select class="estado-select" onchange="updatePedidoEstado(${p.id}, this.value)">
+            ${['pendiente','preparando','listo','entregado'].map(e => `<option value="${e}" ${p.estado === e ? 'selected' : ''}>${e}</option>`).join('')}
+          </select>
+        </td>
+        <td>${new Date(p.created_at).toLocaleDateString('es-ES')}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function updatePedidoEstado(id, estado) {
+  await fetch('/admin/pedidos/estado', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: adminPassword, id, estado }) });
+}
+
+// ── CLIENTES ──
+async function loadClientes() {
+  const res = await fetch('/admin/clientes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: adminPassword }) });
+  const clientes = await res.json();
+  const tbody = document.getElementById('tbody-clientes');
+  if (!clientes.length) { tbody.innerHTML = '<tr><td colspan="4" class="table-empty">Sin suscriptores</td></tr>'; return; }
+  tbody.innerHTML = clientes.map(c => `
+    <tr>
+      <td>#${c.id}</td>
+      <td>${c.email}</td>
+      <td>${c.nombre || '—'}</td>
+      <td>${new Date(c.created_at).toLocaleDateString('es-ES')}</td>
+    </tr>
+  `).join('');
+}
+
+// ── CONTRASEÑA ──
+async function changePassword() {
+  const nueva = document.getElementById('pw-nueva').value;
+  const repetir = document.getElementById('pw-repetir').value;
+  const actual = document.getElementById('pw-actual').value;
+  const msg = document.getElementById('pw-msg');
+  if (nueva !== repetir) { msg.style.display = 'block'; msg.style.color = 'var(--red)'; msg.textContent = 'Las contraseñas no coinciden'; return; }
+  const res = await fetch('/admin/password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: actual, nueva, repetir }) });
+  const data = await res.json();
+  msg.style.display = 'block';
+  if (data.ok) {
+    adminPassword = nueva;
+    msg.style.color = '#6dc47b';
+    msg.textContent = 'Contraseña cambiada ✓';
+    ['pw-actual','pw-nueva','pw-repetir'].forEach(id => document.getElementById(id).value = '');
+  } else {
+    msg.style.color = 'var(--red)';
+    msg.textContent = data.error || 'Error al cambiar contraseña';
+  }
+}
+</script>
+</body>
+</html>

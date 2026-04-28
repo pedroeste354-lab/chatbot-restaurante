@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurante</title>
+  <meta name="description" content="Restaurante" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=Inter:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Funciones críticas definidas ANTES de cualquier CDN para que siempre estén disponibles -->
+  <script>
+    function toggleChat() { document.getElementById('chat-widget').classList.toggle('open'); }
+    function toggleCart() {
+      document.getElementById('cart-drawer').classList.toggle('open');
+      document.getElementById('cart-overlay').classList.toggle('visible');
+    }
+    function toggleMobileNav() { document.getElementById('mobile-nav').classList.toggle('open'); }
+    function openReserva() {
+      document.getElementById('chat-widget').classList.add('open');
+      if (typeof sendChipMessage === 'function') sendChipMessage('Quiero reservar una mesa');
+    }
+    function switchTab(name, btn) {
+      document.querySelectorAll('.carta-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.carta-section').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+    }
+    function toggleDireccion() {
+      const tipo = document.getElementById('checkout-tipo').value;
+      document.getElementById('checkout-direccion-group').style.display = tipo === 'domicilio' ? 'flex' : 'none';
+    }
+    function closeCheckout() { document.getElementById('checkout-modal').classList.remove('open'); }
+  </script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="#" class="nav-logo" id="nav-logo">Rest<span>.</span></a>
+  <nav>
+    <a href="#carta">Carta</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="btn-cart" onclick="toggleCart()">
+      🛒 Carrito <span id="cart-badge"></span>
+    </button>
+    <button class="btn-reservar-nav" onclick="openReserva()">Reservar mesa</button>
+    <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <button class="btn-close-nav" onclick="toggleMobileNav()">✕</button>
+  <a href="#carta" onclick="toggleMobileNav()">Carta</a>
+  <a href="#nosotros" onclick="toggleMobileNav()">Nosotros</a>
+  <a href="#contacto" onclick="toggleMobileNav()">Contacto</a>
+  <button class="btn-primary" onclick="openReserva(); toggleMobileNav()">Reservar mesa</button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="hero-eyebrow">Gastronomía</div>
+    <h1 id="hero-title">Cocina que<br><em>enamora</em></h1>
+    <p class="hero-sub" id="hero-sub">Una experiencia gastronómica única donde cada plato es una historia. Reserva tu mesa y déjate sorprender.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="openReserva()">Reservar mesa</button>
+      <a href="#carta" class="btn-outline">Ver la carta</a>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Descubrir</span>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-visual-bg"></div>
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-visual-overlay"></div>
+  </div>
+</section>
+
+<!-- FEATURES BAR -->
+<div class="features-bar">
+  <div class="feature-item">
+    <div class="feature-icon">🕐</div>
+    <div>
+      <div class="feature-title">Horario</div>
+      <div class="feature-text" id="feature-horario-text">Cargando...</div>
+    </div>
+  </div>
+  <div class="feature-item">
+    <div class="feature-icon">🍽️</div>
+    <div>
+      <div class="feature-title">Menú del día</div>
+      <div class="feature-text" id="feature-menu-text">Cargando...</div>
+    </div>
+  </div>
+  <div class="feature-item">
+    <div class="feature-icon">📍</div>
+    <div>
+      <div class="feature-title">Dónde estamos</div>
+      <div class="feature-text" id="feature-ubicacion-text">Cargando...</div>
+    </div>
+  </div>
+</div>
+
+<!-- CARTA -->
+<section id="carta">
+  <div class="section-label">Nuestra carta</div>
+  <h2 class="section-title">Lo que cocinamos</h2>
+  <p class="section-sub">Ingredientes frescos, recetas con historia.</p>
+  <div class="carta-tabs">
+    <button class="carta-tab active" onclick="switchTab('entrantes', this)">Entrantes</button>
+    <button class="carta-tab" onclick="switchTab('principales', this)">Principales</button>
+    <button class="carta-tab" onclick="switchTab('postres', this)">Postres</button>
+  </div>
+  <div class="carta-section active" id="tab-entrantes"><div class="platos-grid" id="grid-entrantes"></div></div>
+  <div class="carta-section" id="tab-principales"><div class="platos-grid" id="grid-principales"></div></div>
+  <div class="carta-section" id="tab-postres"><div class="platos-grid" id="grid-postres"></div></div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div class="nosotros-grid">
+    <div>
+      <div class="section-label">Nuestra historia</div>
+      <h2 class="section-title">Una pasión<br>hecha <em>restaurante</em></h2>
+      <p class="nosotros-text" id="nosotros-text">Cargando...</p>
+    </div>
+    <div class="nosotros-stats">
+      <div class="stat-box"><div class="stat-number" id="stat-anos">0</div><div class="stat-label">Años de experiencia</div></div>
+      <div class="stat-box"><div class="stat-number" id="stat-valoracion">0</div><div class="stat-label">Valoración media</div></div>
+      <div class="stat-box"><div class="stat-number" id="stat-reviews">0</div><div class="stat-label">Valoraciones</div></div>
+      <div class="stat-box" id="stat-terraza-box" style="display:none"><div class="stat-number">🌿</div><div class="stat-label">Terraza</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-label">Encuéntranos</div>
+  <h2 class="section-title">Visítanos</h2>
+  <div class="contacto-grid">
+    <div class="contacto-info">
+      <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-label">Dirección</div><div class="contact-value" id="contact-direccion">—</div></div></div>
+      <div class="contact-item"><div class="contact-icon">📞</div><div><div class="contact-label">Teléfono</div><div class="contact-value" id="contact-telefono">—</div></div></div>
+      <div class="contact-item"><div class="contact-icon">💬</div><div><div class="contact-label">WhatsApp</div><a class="contact-value" id="contact-whatsapp" href="#">—</a></div></div>
+      <div class="contact-item"><div class="contact-icon">🕐</div><div><div class="contact-label">Horario</div><div class="contact-value" id="contact-horario">—</div></div></div>
+      <div class="contact-item" id="contact-parking-item" style="display:none"><div class="contact-icon">🅿️</div><div><div class="contact-label">Parking</div><div class="contact-value" id="contact-parking">—</div></div></div>
+    </div>
+    <div class="map-container" id="map-container">
+      <div style="height:360px;display:flex;align-items:center;justify-content:center;color:var(--text);font-size:0.85rem;">Mapa no configurado</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUSCRIPCIÓN -->
+<div class="section-suscripcion">
+  <div>
+    <div class="section-label">Newsletter</div>
+    <h2 class="section-title" style="font-size:clamp(1.5rem,3vw,2.5rem)">Novedades y<br>ofertas exclusivas</h2>
+  </div>
+  <div>
+    <div class="suscripcion-form">
+      <input type="email" id="suscribir-email" placeholder="tu@email.com" />
+      <button class="btn-primary" onclick="submitSuscripcion()">Suscribirme</button>
+    </div>
+    <div id="suscribir-msg"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy" id="footer-copy">© 2024 Restaurante. Todos los derechos reservados.</div>
+  <div class="footer-payments">
+    <span class="payment-chip">💳 Tarjeta</span>
+    <span class="payment-chip">💵 Efectivo</span>
+    <span class="payment-chip">🚚 Contrarembolso</span>
+  </div>
+</footer>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+
+<!-- CART DRAWER -->
+<div id="cart-drawer">
+  <div class="cart-header">
+    <h3>Tu pedido</h3>
+    <button class="btn-close-cart" onclick="toggleCart()">✕</button>
+  </div>
+  <div id="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-amount" id="cart-total-amount">0,00€</span>
+    </div>
+    <button class="btn-checkout" onclick="openCheckout()">Finalizar pedido →</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkout-modal">
+  <div class="checkout-box">
+    <div class="checkout-header">
+      <h3>Finalizar pedido</h3>
+      <button class="btn-close-cart" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="checkout-body">
+      <div class="checkout-summary">
+        <div id="checkout-items-list"></div>
+        <div class="checkout-total-row"><span>Total</span><span id="checkout-total">0,00€</span></div>
+      </div>
+      <div class="form-group"><label>Nombre</label><input type="text" id="checkout-nombre" placeholder="Tu nombre" /></div>
+      <div class="form-group"><label>Email</label><input type="email" id="checkout-email" placeholder="tu@email.com" /></div>
+      <div class="form-group"><label>Teléfono (opcional)</label><input type="tel" id="checkout-telefono" placeholder="600 000 000" /></div>
+      <div class="form-group">
+        <label>Tipo de pedido</label>
+        <select id="checkout-tipo" onchange="toggleDireccion()">
+          <option value="recogida">Recogida en local</option>
+          <option value="domicilio">Entrega a domicilio</option>
+        </select>
+      </div>
+      <div class="form-group" id="checkout-direccion-group" style="display:none">
+        <label>Dirección de entrega</label>
+        <input type="text" id="checkout-direccion" placeholder="Calle, número, piso..." />
+      </div>
+      <div class="form-group">
+        <label>Forma de pago</label>
+        <div class="payment-options" id="payment-options">
+          <label class="payment-option"><input type="radio" name="pago" value="efectivo" checked /><label>Efectivo</label></label>
+          <label class="payment-option"><input type="radio" name="pago" value="contrarembolso" /><label>Contrarembolso</label></label>
+        </div>
+      </div>
+      <button class="btn-checkout" onclick="submitPedido()">Confirmar pedido →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="global-toast"></div>
+
+<!-- CHAT BUBBLE -->
+<div id="chat-bubble" class="pulse" onclick="toggleChat()">💬</div>
+
+<!-- CHAT WIDGET -->
+<div id="chat-widget">
+  <div class="chat-header">
+    <div>
+      <div class="chat-title" id="chat-title">Asistente</div>
+      <div class="chat-status">En línea</div>
+    </div>
+    <button class="btn-close-chat" onclick="toggleChat()">✕</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div class="chat-chips" id="chat-chips"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chat-input" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')sendMessage()" />
+    <button class="btn-send" onclick="sendMessage()">→</button>
+  </div>
+</div>
+
+<!-- SCRIPTS: locales primero, CDN al final sin bloquear el render -->
+<script src="chat.js"></script>
+<script src="cart.js"></script>
+<script>
+// Cargar config y renderizar página
+async function loadConfig() {
+  try {
+    const res = await fetch('/api/config');
+    const c = await res.json();
+
+    document.title = c.nombre || 'Restaurante';
+    document.querySelector('meta[name="description"]').content = c.nombre || '';
+    document.getElementById('nav-logo').innerHTML = (c.nombre || 'Rest') + '<span>.</span>';
+    document.getElementById('hero-eyebrow').textContent = c.cocina || 'Gastronomía';
+    document.getElementById('hero-title').innerHTML = `${c.nombre || 'Nuestro restaurante'}<br><em>te espera</em>`;
+    document.getElementById('hero-sub').textContent = (c.nosotros || '').substring(0, 120);
+    document.getElementById('feature-horario-text').textContent = c.horario || '—';
+    document.getElementById('feature-menu-text').textContent = c.menu_dia ? `${c.menu_dia.precio} — ${c.menu_dia.descripcion}` : '—';
+    document.getElementById('feature-ubicacion-text').textContent = c.direccion || '—';
+    document.getElementById('nosotros-text').textContent = c.nosotros || '';
+    document.getElementById('stat-anos').textContent = c.anos || '0';
+    document.getElementById('stat-valoracion').textContent = c.valoracion || '0';
+    document.getElementById('stat-reviews').textContent = c.num_valoraciones || '0';
+    if (c.terraza) document.getElementById('stat-terraza-box').style.display = '';
+    document.getElementById('contact-direccion').textContent = c.direccion || '—';
+    document.getElementById('contact-telefono').textContent = c.telefono || '—';
+    const wa = document.getElementById('contact-whatsapp');
+    wa.textContent = c.whatsapp || '—';
+    if (c.whatsapp) wa.href = `https://wa.me/${c.whatsapp.replace(/\D/g,'')}`;
+    document.getElementById('contact-horario').textContent = c.horario || '—';
+    if (c.parking) { document.getElementById('contact-parking').textContent = c.parking; document.getElementById('contact-parking-item').style.display = ''; }
+    if (c.google_maps_embed) document.getElementById('map-container').innerHTML = `<iframe src="${c.google_maps_embed}" allowfullscreen loading="lazy"></iframe>`;
+    document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${c.nombre || 'Restaurante'}. Todos los derechos reservados.`;
+    document.getElementById('chat-title').textContent = c.nombre || 'Asistente';
+    renderCarta(c.carta || {});
+  } catch(e) { console.error('Error cargando config:', e); }
+}
+
+function renderCarta(carta) {
+  const tipos = { entrantes: 'grid-entrantes', principales: 'grid-principales', postres: 'grid-postres' };
+  for (const [tipo, gridId] of Object.entries(tipos)) {
+    const grid = document.getElementById(gridId);
+    const platos = carta[tipo] || [];
+    if (!platos.length) { grid.innerHTML = '<p style="color:var(--text);font-size:0.9rem;padding:2rem 0;">No hay platos disponibles.</p>'; continue; }
+    grid.innerHTML = platos.map(p => `
+      <div class="plato-card">
+        ${p.foto ? `<img class="plato-img" src="${p.foto}" alt="${p.nombre}" loading="lazy" />` : `<div class="plato-img-placeholder">🍽️</div>`}
+        <div class="plato-body">
+          <div class="plato-nombre">${p.nombre}</div>
+          ${p.descripcion ? `<div class="plato-desc">${p.descripcion}</div>` : ''}
+          <div class="plato-footer">
+            <span class="plato-precio">${p.precio}</span>
+            <button class="btn-add" onclick="addToCart('${p.nombre.replace(/'/g,"\\'")}','${p.precio}')">+ Añadir</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+loadConfig();
+
+// Header scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// GSAP + Lenis: carga diferida, no bloquea nada crítico
+window.addEventListener('load', function() {
+  // GSAP scroll animations
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('.reveal').forEach(el => {
+      gsap.fromTo(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+    });
+    gsap.from('.hero h1', { opacity: 0, y: 40, duration: 1, delay: 0.2, ease: 'power3.out' });
+    gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 0.8, delay: 0.5, ease: 'power3.out' });
+    gsap.from('.hero-ctas', { opacity: 0, y: 20, duration: 0.8, delay: 0.7, ease: 'power3.out' });
+  }
+
+  // Lenis smooth scroll
+  if (typeof Lenis !== 'undefined' && typeof gsap !== 'undefined') {
+    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+    gsap.ticker.add(t => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+});
+</script>
+
+<!-- CDN: carga DESPUÉS de los scripts locales, con defer -->
+<script defer src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script defer src="three-bg.js"></script>
+</body>
+</html>

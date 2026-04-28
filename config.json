@@ -1,0 +1,84 @@
+{
+  "nombre": "Palomo z",
+  "direccion": "Calle Gran Vía 42, Madrid",
+  "telefono": "910 123 456",
+  "whatsapp": "620 123 456",
+  "horario": "L-D 13:00–16:30 y 20:00–23:30. Cerrado martes.",
+  "precio_medio": "25-35€",
+  "cocina": "Mediterránea",
+  "parking": "Parking público a 50m en Calle Montera",
+  "terraza": true,
+  "google_maps_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.6!2d-3.7025!3d40.4200!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42289e4b00027f%3A0x7e6ddd6f99f87f53!2sGran%20V%C3%ADa%2C%2042%2C%2028013%20Madrid!5e0!3m2!1ses!2ses!4v1",
+  "menu_dia": {
+    "precio": "14€",
+    "dias": "Lunes a viernes",
+    "descripcion": "Primero, segundo, postre y bebida incluida"
+  },
+  "carta": {
+    "entrantes": [
+      {
+        "nombre": "Ensalada de tomate y burrata",
+        "precio": "12€",
+        "descripcion": "Tomate de temporada, burrata fresca, albahaca y aceite virgen extra",
+        "foto": "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=600&q=80"
+      },
+      {
+        "nombre": "Carpaccio de ternera",
+        "precio": "14€",
+        "descripcion": "Ternera ecológica, rúcula, parmesano y alcaparras",
+        "foto": "https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&q=80"
+      },
+      {
+        "nombre": "Croquetas de jamón ibérico",
+        "precio": "10€",
+        "descripcion": "Bechamel artesanal con jamón 100% ibérico, crujientes por fuera",
+        "foto": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80"
+      }
+    ],
+    "principales": [
+      {
+        "nombre": "Arroz con bogavante",
+        "precio": "28€",
+        "descripcion": "Arroz meloso con bogavante fresco y sofrito de verduras",
+        "foto": "https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&q=80"
+      },
+      {
+        "nombre": "Solomillo a la brasa",
+        "precio": "26€",
+        "descripcion": "200g de solomillo de ternera con salsa de trufa y patatas confitadas",
+        "foto": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80"
+      },
+      {
+        "nombre": "Dorada al horno",
+        "precio": "22€",
+        "descripcion": "Dorada entera al horno con limón, hierbas frescas y verduras de temporada",
+        "foto": "https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=600&q=80"
+      }
+    ],
+    "postres": [
+      {
+        "nombre": "Tiramisú casero",
+        "precio": "7€",
+        "descripcion": "Receta tradicional italiana con café expreso y mascarpone",
+        "foto": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&q=80"
+      },
+      {
+        "nombre": "Tarta de queso",
+        "precio": "7€",
+        "descripcion": "Tarta de queso cremosa al horno con coulis de frutos rojos",
+        "foto": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80"
+      },
+      {
+        "nombre": "Helado artesanal",
+        "precio": "6€",
+        "descripcion": "Tres bolas a elegir entre: vainilla, chocolate, fresa o pistacho",
+        "foto": "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=600&q=80"
+      }
+    ]
+  },
+  "nosotros": "Desde 2008, Palomo z lleva la esencia del mar y la tierra al centro de Madrid. Trabajamos con productores locales y de temporada para ofrecerte una cocina honesta, llena de sabor y tradición.",
+  "anos": "15",
+  "valoracion": "4.8",
+  "num_valoraciones": "200",
+  "admin_password": "$argon2id$v=19$m=65536,t=3,p=4$GHqZghyss6Ur5jqMDfpBdA$nYLH+gh4nLQ5QxqjLpqNv/X12MJHyu3Llxgw+8z7OZA"
+}
