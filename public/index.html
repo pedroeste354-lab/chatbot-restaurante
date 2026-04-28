@@ -31,13 +31,13 @@
 
 <!-- HEADER -->
 <header id="header">
-  <a href="/" class="nav-logo" id="nav-logo">Rest<span>.</span></a>
-  <nav>
+  <nav class="nav-left">
     <a href="/carta.html">Carta</a>
     <a href="#nosotros">Nosotros</a>
-    <a href="#contacto">Contacto</a>
   </nav>
-  <div class="nav-actions">
+  <a href="/" class="nav-logo" id="nav-logo">Rest<span>.</span></a>
+  <div class="nav-right">
+    <a href="#contacto" class="nav-link-right">Contacto</a>
     <button class="btn-cart" onclick="toggleCart()">🛒 <span id="cart-badge"></span></button>
     <button class="btn-reservar-nav" onclick="openReserva()">Reservar mesa</button>
     <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menú">
@@ -60,12 +60,35 @@
   <div class="hero-full-bg" id="hero-bg"></div>
   <div class="hero-full-overlay"></div>
   <div class="hero-full-content">
-    <div class="hero-eyebrow" id="hero-eyebrow">Gastronomía</div>
-    <h1 id="hero-title">Cocina que<br><em>enamora</em></h1>
-    <p class="hero-sub" id="hero-sub">Una experiencia gastronómica única donde cada plato es una historia.</p>
+    <!-- Decoración geométrica superior -->
+    <div class="hero-emblem">
+      <svg viewBox="0 0 120 60" width="120" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="30" x2="42" y2="30" stroke="rgba(245,158,11,0.6)" stroke-width="0.8"/>
+        <line x1="78" y1="30" x2="120" y2="30" stroke="rgba(245,158,11,0.6)" stroke-width="0.8"/>
+        <polygon points="60,4 50,56 70,56" stroke="rgba(245,158,11,0.7)" stroke-width="0.8" fill="none"/>
+        <line x1="48" y1="20" x2="72" y2="20" stroke="rgba(245,158,11,0.4)" stroke-width="0.6"/>
+        <line x1="52" y1="36" x2="68" y2="36" stroke="rgba(245,158,11,0.4)" stroke-width="0.6"/>
+      </svg>
+    </div>
+    <h1 id="hero-title">RESTAURANTE</h1>
+    <div class="hero-divider">
+      <span></span><div class="hero-divider-dot"></div><span></span>
+    </div>
+    <p class="hero-sub" id="hero-sub">Una experiencia gastronómica única</p>
+    <p class="hero-address" id="hero-address"></p>
     <div class="hero-ctas">
-      <button class="btn-primary" onclick="openReserva()">Reservar mesa</button>
-      <a href="/carta.html" class="btn-outline">Ver la carta</a>
+      <button class="btn-reserva-hero" onclick="openReserva()">HAZ TU RESERVA</button>
+      <a href="/carta.html" class="btn-carta-hero">VER LA CARTA</a>
+    </div>
+    <!-- Decoración geométrica inferior -->
+    <div class="hero-emblem hero-emblem-bottom">
+      <svg viewBox="0 0 120 60" width="120" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="30" x2="42" y2="30" stroke="rgba(245,158,11,0.6)" stroke-width="0.8"/>
+        <line x1="78" y1="30" x2="120" y2="30" stroke="rgba(245,158,11,0.6)" stroke-width="0.8"/>
+        <polygon points="60,56 50,4 70,4" stroke="rgba(245,158,11,0.7)" stroke-width="0.8" fill="none"/>
+        <line x1="48" y1="40" x2="72" y2="40" stroke="rgba(245,158,11,0.4)" stroke-width="0.6"/>
+        <line x1="52" y1="24" x2="68" y2="24" stroke="rgba(245,158,11,0.4)" stroke-width="0.6"/>
+      </svg>
     </div>
   </div>
   <div class="hero-scroll-hint">
@@ -255,8 +278,8 @@ async function loadConfig() {
     document.title = c.nombre || 'Restaurante';
     document.querySelector('meta[name="description"]').content = c.nombre || '';
     document.getElementById('nav-logo').innerHTML = (c.nombre || 'Rest') + '<span>.</span>';
-    document.getElementById('hero-eyebrow').textContent = c.cocina || 'Gastronomía';
-    document.getElementById('hero-title').innerHTML = `${c.nombre || 'Nuestro restaurante'}<br><em>te espera</em>`;
+    document.getElementById('hero-title').textContent = (c.nombre || 'Restaurante').toUpperCase();
+    document.getElementById('hero-address').textContent = c.direccion || '';
     document.getElementById('hero-sub').textContent = (c.nosotros || '').substring(0, 100);
     document.getElementById('feature-horario-text').textContent = c.horario || '—';
     document.getElementById('feature-menu-text').textContent = c.menu_dia ? `${c.menu_dia.precio} — ${c.menu_dia.descripcion}` : '—';
