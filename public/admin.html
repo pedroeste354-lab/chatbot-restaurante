@@ -152,6 +152,18 @@
         <h3>Google Maps</h3>
         <div class="form-group"><label>URL del embed</label><input id="f-maps" placeholder="https://www.google.com/maps/embed?pb=..." /></div>
       </div>
+      <div class="form-section">
+        <h3>Carta PDF</h3>
+        <div class="form-group full"><label>URL del PDF de la carta</label><input id="f-carta_pdf" placeholder="https://ejemplo.com/carta.pdf" /></div>
+      </div>
+      <div class="form-section">
+        <h3>Redes sociales</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>Instagram (URL)</label><input id="f-instagram" placeholder="https://instagram.com/turestaurante" /></div>
+          <div class="form-group"><label>TikTok (URL)</label><input id="f-tiktok" placeholder="https://tiktok.com/@turestaurante" /></div>
+          <div class="form-group"><label>Facebook (URL)</label><input id="f-facebook" placeholder="https://facebook.com/turestaurante" /></div>
+        </div>
+      </div>
       <div style="display:flex;align-items:center;gap:1rem;margin-top:1.5rem">
         <button class="btn btn-primary" onclick="save()">Guardar cambios</button>
         <span class="save-msg" id="save-msg">Guardado ✓</span>
@@ -312,6 +324,10 @@ function fillForm() {
   set('f-parking', configData.parking);
   set('f-terraza', configData.terraza ? 'true' : 'false');
   set('f-maps', configData.google_maps_embed);
+  set('f-carta_pdf', configData.carta_pdf);
+  set('f-instagram', configData.instagram);
+  set('f-tiktok', configData.tiktok);
+  set('f-facebook', configData.facebook);
   set('f-nosotros', configData.nosotros);
   set('f-anos', configData.anos);
   set('f-valoracion', configData.valoracion);
@@ -340,6 +356,10 @@ async function save() {
     parking: document.getElementById('f-parking').value,
     terraza: document.getElementById('f-terraza').value === 'true',
     google_maps_embed: document.getElementById('f-maps').value,
+    carta_pdf: document.getElementById('f-carta_pdf').value,
+    instagram: document.getElementById('f-instagram').value,
+    tiktok: document.getElementById('f-tiktok').value,
+    facebook: document.getElementById('f-facebook').value,
     nosotros: document.getElementById('f-nosotros').value,
     anos: document.getElementById('f-anos').value,
     valoracion: document.getElementById('f-valoracion').value,

@@ -56,6 +56,10 @@ header.scrolled {
 }
 .nav-left { display: flex; gap: 2.5rem; align-items: center; }
 .nav-right { display: flex; gap: 1rem; align-items: center; justify-content: flex-end; }
+.nav-social { display: flex; gap: 0.6rem; align-items: center; }
+.nav-social-icon { display: flex; align-items: center; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+.nav-social-icon:hover { color: var(--amber); }
+.nav-social-icon svg { width: 17px; height: 17px; }
 .nav-link-right {
   font-size: 0.75rem;
   font-weight: 500;
