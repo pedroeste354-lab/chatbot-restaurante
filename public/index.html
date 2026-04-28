@@ -103,20 +103,8 @@
   <a id="badge-carta" href="/carta.html" class="badge-circle" target="_blank">
     <span class="badge-text">CARTA</span>
   </a>
-  <a id="badge-entrantes" href="/carta.html#entrantes" class="badge-circle" target="_blank">
-    <span class="badge-text">ENTRANTES</span>
-  </a>
-  <a id="badge-principales" href="/carta.html#principales" class="badge-circle" target="_blank">
-    <span class="badge-text">PRINCIPALES</span>
-  </a>
-  <a id="badge-postres" href="/carta.html#postres" class="badge-circle" target="_blank">
-    <span class="badge-text">POSTRES</span>
-  </a>
   <a href="#" class="badge-circle badge-highlight" onclick="openReserva(); return false;">
     <span class="badge-text">RESERVAR<br>MESA</span>
-  </a>
-  <a href="#contacto" class="badge-circle">
-    <span class="badge-text">CONTACTO</span>
   </a>
 </div>
 
@@ -318,8 +306,7 @@ async function loadConfig() {
 
     // PDF links
     if (c.carta_pdf) {
-      ['badge-carta', 'badge-entrantes', 'badge-principales', 'badge-postres',
-       'nav-carta-link', 'mobile-carta-link', 'hero-carta-link'].forEach(id => {
+      ['badge-carta', 'nav-carta-link', 'mobile-carta-link', 'hero-carta-link'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.href = c.carta_pdf;
       });
