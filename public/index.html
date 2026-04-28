@@ -32,7 +32,7 @@
 <!-- HEADER -->
 <header id="header">
   <nav class="nav-left">
-    <a href="/carta.html">Carta</a>
+    <a href="#" id="nav-carta-link" target="_blank">Carta</a>
     <a href="#nosotros">Nosotros</a>
   </nav>
   <a href="/" class="nav-logo" id="nav-logo">Rest<span>.</span></a>
@@ -50,7 +50,7 @@
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobile-nav">
   <button class="btn-close-nav" onclick="toggleMobileNav()">✕</button>
-  <a href="/carta.html" onclick="toggleMobileNav()">Carta</a>
+  <a href="#" id="mobile-carta-link" target="_blank" onclick="toggleMobileNav()">Carta</a>
   <a href="#nosotros" onclick="toggleMobileNav()">Nosotros</a>
   <a href="#contacto" onclick="toggleMobileNav()">Contacto</a>
   <button class="btn-primary" onclick="openReserva(); toggleMobileNav()">Reservar mesa</button>
@@ -79,7 +79,7 @@
     <p class="hero-address" id="hero-address"></p>
     <div class="hero-ctas">
       <button class="btn-reserva-hero" onclick="openReserva()">HAZ TU RESERVA</button>
-      <a href="/carta.html" class="btn-carta-hero">VER LA CARTA</a>
+      <a href="#" id="hero-carta-link" class="btn-carta-hero" target="_blank">VER LA CARTA</a>
     </div>
     <!-- Decoración geométrica inferior -->
     <div class="hero-emblem hero-emblem-bottom">
@@ -316,11 +316,12 @@ async function loadConfig() {
       }
     });
 
-    // PDF badges
+    // PDF links
     if (c.carta_pdf) {
-      ['badge-carta', 'badge-entrantes', 'badge-principales', 'badge-postres'].forEach(id => {
+      ['badge-carta', 'badge-entrantes', 'badge-principales', 'badge-postres',
+       'nav-carta-link', 'mobile-carta-link', 'hero-carta-link'].forEach(id => {
         const el = document.getElementById(id);
-        if (el) { el.href = c.carta_pdf; el.target = '_blank'; }
+        if (el) el.href = c.carta_pdf;
       });
     }
   } catch(e) { console.error(e); }
