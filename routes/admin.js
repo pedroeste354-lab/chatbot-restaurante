@@ -30,7 +30,7 @@ adminRouter.post('/admin/verify', async (req, res) => {
 
 adminRouter.post('/admin/save', authMiddleware, (req, res) => {
   const config = getConfig();
-  const allowed = ['nombre', 'direccion', 'telefono', 'whatsapp', 'horario', 'precio_medio', 'cocina', 'parking', 'terraza', 'google_maps_embed', 'menu_dia', 'carta', 'nosotros', 'anos', 'valoracion', 'num_valoraciones', 'carta_pdf', 'instagram', 'tiktok', 'facebook', 'report_email', 'report_hora'];
+  const allowed = ['nombre', 'direccion', 'telefono', 'whatsapp', 'horario', 'precio_medio', 'cocina', 'parking', 'terraza', 'google_maps_embed', 'menu_dia', 'carta', 'nosotros', 'anos', 'valoracion', 'num_valoraciones', 'carta_pdf', 'instagram', 'tiktok', 'facebook', 'report_email', 'report_hora', 'hero_foto', 'logo_url'];
   for (const key of allowed) {
     if (req.body[key] !== undefined) config[key] = req.body[key];
   }

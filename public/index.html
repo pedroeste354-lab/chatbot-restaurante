@@ -266,7 +266,11 @@ async function loadConfig() {
     const c = await res.json();
     document.title = c.nombre || 'Restaurante';
     document.querySelector('meta[name="description"]').content = c.nombre || '';
-    document.getElementById('nav-logo').innerHTML = (c.nombre || 'Rest') + '<span>.</span>';
+    if (c.logo_url) {
+      document.getElementById('nav-logo').innerHTML = `<img src="${c.logo_url}" alt="${c.nombre || 'Logo'}" style="height:36px;object-fit:contain;display:block" />`;
+    } else {
+      document.getElementById('nav-logo').innerHTML = (c.nombre || 'Rest') + '<span>.</span>';
+    }
     document.getElementById('hero-title').textContent = (c.nombre || 'Restaurante').toUpperCase();
     document.getElementById('hero-address').textContent = c.direccion || '';
     document.getElementById('hero-sub').textContent = (c.nosotros || '').substring(0, 100);
