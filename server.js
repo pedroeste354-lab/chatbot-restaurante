@@ -7,6 +7,7 @@ import { chatRouter } from './routes/chat.js';
 import { ordersRouter } from './routes/orders.js';
 import { adminRouter } from './routes/admin.js';
 import db from './db/database.js';
+import { startCron } from './utils/cron.js';
 
 const app = express();
 
@@ -53,4 +54,7 @@ app.use(ordersRouter);
 app.use(adminRouter);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Servidor en http://localhost:${PORT}`);
+  startCron();
+});

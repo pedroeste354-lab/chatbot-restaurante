@@ -164,6 +164,14 @@
           <div class="form-group"><label>Facebook (URL)</label><input id="f-facebook" placeholder="https://facebook.com/turestaurante" /></div>
         </div>
       </div>
+      <div class="form-section">
+        <h3>Informe diario de reservas</h3>
+        <p style="font-size:0.78rem;color:var(--text);margin-bottom:1rem">Se enviará un PDF con las reservas del día al email indicado. Requiere configurar <code style="background:var(--dark3);padding:2px 5px;border-radius:3px">SMTP_USER</code> y <code style="background:var(--dark3);padding:2px 5px;border-radius:3px">SMTP_PASS</code> en Railway.</p>
+        <div class="form-grid">
+          <div class="form-group"><label>Email destinatario</label><input id="f-report_email" placeholder="dueño@ejemplo.com" type="email" /></div>
+          <div class="form-group"><label>Hora de envío (HH:MM)</label><input id="f-report_hora" placeholder="08:00" /></div>
+        </div>
+      </div>
       <div style="display:flex;align-items:center;gap:1rem;margin-top:1.5rem">
         <button class="btn btn-primary" onclick="save()">Guardar cambios</button>
         <span class="save-msg" id="save-msg">Guardado ✓</span>
@@ -328,6 +336,8 @@ function fillForm() {
   set('f-instagram', configData.instagram);
   set('f-tiktok', configData.tiktok);
   set('f-facebook', configData.facebook);
+  set('f-report_email', configData.report_email);
+  set('f-report_hora', configData.report_hora);
   set('f-nosotros', configData.nosotros);
   set('f-anos', configData.anos);
   set('f-valoracion', configData.valoracion);
@@ -360,6 +370,8 @@ async function save() {
     instagram: document.getElementById('f-instagram').value,
     tiktok: document.getElementById('f-tiktok').value,
     facebook: document.getElementById('f-facebook').value,
+    report_email: document.getElementById('f-report_email').value,
+    report_hora: document.getElementById('f-report_hora').value,
     nosotros: document.getElementById('f-nosotros').value,
     anos: document.getElementById('f-anos').value,
     valoracion: document.getElementById('f-valoracion').value,
