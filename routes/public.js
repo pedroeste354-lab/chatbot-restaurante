@@ -27,3 +27,24 @@ publicRouter.post('/api/suscribir', (req, res) => {
     res.status(500).json({ error: 'Error al suscribir' });
   }
 });
+
+publicRouter.get('/api/resenas/:plato', (req, res) => {
+  const resenas = db.prepare('SELECT * FROM resenas WHERE plato = ? ORDER BY created_at DESC LIMIT 30').all(req.params.plato);
+  const avg = resenas.length ? (resenas.reduce((s, r) => s + r.estrellas, 0) / resenas.length).toFixed(1) : null;
+  res.json({ resenas, media: avg, total: resenas.length });
+});
+
+const resenaSchema = z.object({
+  plato: z.string().min(1).max(100),
+  autor: z.string().min(1).max(80),
+  estrellas: z.number().int().min(1).max(5),
+  comentario: z.string().max(500).optional(),
+});
+
+publicRouter.post('/api/resena', (req, res) => {
+  const result = resenaSchema.safeParse(req.body);
+  if (!result.success) return res.status(400).json({ error: 'Datos inválidos' });
+  const { plato, autor, estrellas, comentario } = result.data;
+  db.prepare('INSERT INTO resenas (plato, autor, estrellas, comentario) VALUES (?, ?, ?, ?)').run(plato, autor, estrellas, comentario || null);
+  res.json({ ok: true });
+});

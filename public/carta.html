@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carta — Restaurante</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=Inter:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    function toggleCart() {
+      document.getElementById('cart-drawer').classList.toggle('open');
+      document.getElementById('cart-overlay').classList.toggle('visible');
+    }
+    function toggleMobileNav() { document.getElementById('mobile-nav').classList.toggle('open'); }
+    function toggleChat() { document.getElementById('chat-widget').classList.toggle('open'); }
+    function openReserva() {
+      document.getElementById('chat-widget').classList.add('open');
+      if (typeof sendChipMessage === 'function') sendChipMessage('Quiero reservar una mesa');
+    }
+    function toggleDireccion() {
+      document.getElementById('checkout-direccion-group').style.display =
+        document.getElementById('checkout-tipo').value === 'domicilio' ? 'flex' : 'none';
+    }
+    function closeCheckout() { document.getElementById('checkout-modal').classList.remove('open'); }
+  </script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header" class="scrolled">
+  <a href="/" class="nav-logo" id="nav-logo">Rest<span>.</span></a>
+  <nav>
+    <a href="/carta.html" style="color:var(--cream)">Carta</a>
+    <a href="/#nosotros">Nosotros</a>
+    <a href="/#contacto">Contacto</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="btn-cart" onclick="toggleCart()">🛒 Carrito <span id="cart-badge"></span></button>
+    <button class="btn-reservar-nav" onclick="openReserva()">Reservar mesa</button>
+    <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <button class="btn-close-nav" onclick="toggleMobileNav()">✕</button>
+  <a href="/carta.html" onclick="toggleMobileNav()">Carta</a>
+  <a href="/#nosotros" onclick="toggleMobileNav()">Nosotros</a>
+  <a href="/#contacto" onclick="toggleMobileNav()">Contacto</a>
+  <button class="btn-primary" onclick="openReserva(); toggleMobileNav()">Reservar mesa</button>
+</div>
+
+<!-- CARTA PAGE -->
+<div class="carta-page">
+
+  <!-- SIDEBAR -->
+  <aside class="carta-sidebar" id="carta-sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-titulo">
+        <div class="section-label">Menú</div>
+        <h2 style="font-size:1.5rem;margin-bottom:0">Nuestra<br><em>Carta</em></h2>
+      </div>
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <a href="#entrantes" class="sidebar-link active" onclick="setActive(this)">Entrantes</a>
+        <a href="#principales" class="sidebar-link" onclick="setActive(this)">Principales</a>
+        <a href="#postres" class="sidebar-link" onclick="setActive(this)">Postres</a>
+      </nav>
+      <div class="sidebar-cta">
+        <button class="btn-primary" style="width:100%" onclick="openReserva()">Reservar mesa</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="carta-main">
+    <section class="carta-categoria" id="entrantes">
+      <div class="categoria-header">
+        <div class="section-label">Primeros</div>
+        <h2 class="section-title">Entrantes</h2>
+      </div>
+      <div class="platos-grid" id="grid-entrantes"></div>
+    </section>
+
+    <section class="carta-categoria" id="principales">
+      <div class="categoria-header">
+        <div class="section-label">Segundos</div>
+        <h2 class="section-title">Principales</h2>
+      </div>
+      <div class="platos-grid" id="grid-principales"></div>
+    </section>
+
+    <section class="carta-categoria" id="postres">
+      <div class="categoria-header">
+        <div class="section-label">Para terminar</div>
+        <h2 class="section-title">Postres</h2>
+      </div>
+      <div class="platos-grid" id="grid-postres"></div>
+    </section>
+  </main>
+</div>
+
+<!-- MODAL RESEÑAS -->
+<div id="resenas-modal" class="resenas-modal-overlay" onclick="cerrarResenas(event)">
+  <div class="resenas-modal-box">
+    <div class="resenas-modal-header">
+      <div>
+        <div class="resenas-plato-nombre" id="resenas-plato-nombre">Plato</div>
+        <div class="resenas-media" id="resenas-media"></div>
+      </div>
+      <button class="btn-close-cart" onclick="cerrarResenasBtn()">✕</button>
+    </div>
+    <div class="resenas-lista" id="resenas-lista"></div>
+    <div class="resenas-form">
+      <div class="resenas-form-titulo">Deja tu reseña</div>
+      <div class="form-group">
+        <label>Tu nombre</label>
+        <input type="text" id="resena-autor" placeholder="Nombre" />
+      </div>
+      <div class="form-group">
+        <label>Valoración</label>
+        <div class="stars-input" id="stars-input">
+          <span class="star-btn" data-v="1" onclick="setStar(1)">★</span>
+          <span class="star-btn" data-v="2" onclick="setStar(2)">★</span>
+          <span class="star-btn" data-v="3" onclick="setStar(3)">★</span>
+          <span class="star-btn" data-v="4" onclick="setStar(4)">★</span>
+          <span class="star-btn" data-v="5" onclick="setStar(5)">★</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Comentario (opcional)</label>
+        <textarea id="resena-comentario" placeholder="¿Qué te pareció?" rows="3"></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%" onclick="enviarResena()">Publicar reseña</button>
+      <div id="resena-msg" style="margin-top:0.75rem;font-size:0.85rem;color:var(--red);display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+
+<!-- CART DRAWER -->
+<div id="cart-drawer">
+  <div class="cart-header">
+    <h3>Tu pedido</h3>
+    <button class="btn-close-cart" onclick="toggleCart()">✕</button>
+  </div>
+  <div id="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-amount" id="cart-total-amount">0,00€</span>
+    </div>
+    <button class="btn-checkout" onclick="openCheckout()">Finalizar pedido →</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkout-modal">
+  <div class="checkout-box">
+    <div class="checkout-header">
+      <h3>Finalizar pedido</h3>
+      <button class="btn-close-cart" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="checkout-body">
+      <div class="checkout-summary">
+        <div id="checkout-items-list"></div>
+        <div class="checkout-total-row"><span>Total</span><span id="checkout-total">0,00€</span></div>
+      </div>
+      <div class="form-group"><label>Nombre</label><input type="text" id="checkout-nombre" placeholder="Tu nombre" /></div>
+      <div class="form-group"><label>Email</label><input type="email" id="checkout-email" placeholder="tu@email.com" /></div>
+      <div class="form-group"><label>Teléfono (opcional)</label><input type="tel" id="checkout-telefono" placeholder="600 000 000" /></div>
+      <div class="form-group">
+        <label>Tipo de pedido</label>
+        <select id="checkout-tipo" onchange="toggleDireccion()">
+          <option value="recogida">Recogida en local</option>
+          <option value="domicilio">Entrega a domicilio</option>
+        </select>
+      </div>
+      <div class="form-group" id="checkout-direccion-group" style="display:none">
+        <label>Dirección de entrega</label>
+        <input type="text" id="checkout-direccion" placeholder="Calle, número, piso..." />
+      </div>
+      <div class="form-group">
+        <label>Forma de pago</label>
+        <div class="payment-options" id="payment-options">
+          <label class="payment-option"><input type="radio" name="pago" value="efectivo" checked /><label>Efectivo</label></label>
+          <label class="payment-option"><input type="radio" name="pago" value="contrarembolso" /><label>Contrarembolso</label></label>
+        </div>
+      </div>
+      <button class="btn-checkout" onclick="submitPedido()">Confirmar pedido →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="global-toast"></div>
+
+<!-- CHAT BUBBLE -->
+<div id="chat-bubble" class="pulse" onclick="toggleChat()">💬</div>
+
+<!-- CHAT WIDGET -->
+<div id="chat-widget">
+  <div class="chat-header">
+    <div>
+      <div class="chat-title" id="chat-title">Asistente</div>
+      <div class="chat-status">En línea</div>
+    </div>
+    <button class="btn-close-chat" onclick="toggleChat()">✕</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div class="chat-chips" id="chat-chips"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chat-input" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')sendMessage()" />
+    <button class="btn-send" onclick="sendMessage()">→</button>
+  </div>
+</div>
+
+<script src="chat.js"></script>
+<script src="cart.js"></script>
+<script>
+let platoActual = null;
+let estrellasSel = 0;
+
+function setActive(el) {
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function starsHtml(avg, total) {
+  if (!avg) return '';
+  const full = Math.round(avg);
+  const stars = '★'.repeat(full) + '☆'.repeat(5 - full);
+  return `<span class="plato-stars">${stars} <span class="plato-stars-count">${avg} (${total})</span></span>`;
+}
+
+async function renderCarta(carta) {
+  const tipos = ['entrantes', 'principales', 'postres'];
+  for (const tipo of tipos) {
+    const grid = document.getElementById('grid-' + tipo);
+    const platos = carta[tipo] || [];
+    if (!platos.length) {
+      grid.innerHTML = '<p style="color:var(--text);font-size:0.9rem;padding:2rem 0;">No hay platos disponibles.</p>';
+      continue;
+    }
+    const resenasPorPlato = await Promise.all(
+      platos.map(p => fetch(`/api/resenas/${encodeURIComponent(p.nombre)}`).then(r => r.json()).catch(() => ({ media: null, total: 0 })))
+    );
+    grid.innerHTML = platos.map((p, i) => {
+      const r = resenasPorPlato[i];
+      return `
+      <div class="plato-card" id="card-${encodeURIComponent(p.nombre)}">
+        ${p.foto ? `<img class="plato-img" src="${p.foto}" alt="${p.nombre}" loading="lazy" />` : `<div class="plato-img-placeholder">🍽️</div>`}
+        <div class="plato-body">
+          <div class="plato-nombre">${p.nombre}</div>
+          ${p.descripcion ? `<div class="plato-desc">${p.descripcion}</div>` : ''}
+          ${starsHtml(r.media, r.total)}
+          <div class="plato-footer">
+            <span class="plato-precio">${p.precio}</span>
+            <div style="display:flex;gap:0.5rem">
+              <button class="btn-resena" onclick="abrirResenas('${p.nombre.replace(/'/g,"\\'")}')">★ Reseñas</button>
+              <button class="btn-add" onclick="addToCart('${p.nombre.replace(/'/g,"\\'")}','${p.precio}')">+ Añadir</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+async function abrirResenas(plato) {
+  platoActual = plato;
+  estrellasSel = 0;
+  document.getElementById('resenas-plato-nombre').textContent = plato;
+  document.getElementById('resena-autor').value = '';
+  document.getElementById('resena-comentario').value = '';
+  document.getElementById('resena-msg').style.display = 'none';
+  setStar(0);
+  document.getElementById('resenas-modal').classList.add('open');
+  await cargarResenas(plato);
+}
+
+async function cargarResenas(plato) {
+  const data = await fetch(`/api/resenas/${encodeURIComponent(plato)}`).then(r => r.json());
+  const media = document.getElementById('resenas-media');
+  const lista = document.getElementById('resenas-lista');
+  if (data.media) {
+    const full = Math.round(data.media);
+    media.innerHTML = `${'★'.repeat(full)}${'☆'.repeat(5-full)} <strong>${data.media}</strong> — ${data.total} reseña${data.total !== 1 ? 's' : ''}`;
+  } else {
+    media.textContent = 'Sin reseñas todavía';
+  }
+  if (!data.resenas.length) {
+    lista.innerHTML = '<p style="color:var(--text);font-size:0.85rem;padding:1rem 0;">Sé el primero en dejar una reseña.</p>';
+    return;
+  }
+  lista.innerHTML = data.resenas.map(r => `
+    <div class="resena-item">
+      <div class="resena-header">
+        <span class="resena-autor">${r.autor}</span>
+        <span class="resena-stars">${'★'.repeat(r.estrellas)}${'☆'.repeat(5-r.estrellas)}</span>
+        <span class="resena-fecha">${new Date(r.created_at).toLocaleDateString('es-ES')}</span>
+      </div>
+      ${r.comentario ? `<div class="resena-comentario">${r.comentario}</div>` : ''}
+    </div>`).join('');
+}
+
+function setStar(n) {
+  estrellasSel = n;
+  document.querySelectorAll('.star-btn').forEach(s => {
+    s.classList.toggle('active', parseInt(s.dataset.v) <= n);
+  });
+}
+
+async function enviarResena() {
+  const autor = document.getElementById('resena-autor').value.trim();
+  const comentario = document.getElementById('resena-comentario').value.trim();
+  const msg = document.getElementById('resena-msg');
+  if (!autor) { msg.textContent = 'Escribe tu nombre.'; msg.style.display = 'block'; return; }
+  if (!estrellasSel) { msg.textContent = 'Selecciona una valoración.'; msg.style.display = 'block'; return; }
+  const res = await fetch('/api/resena', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plato: platoActual, autor, estrellas: estrellasSel, comentario: comentario || undefined })
+  });
+  if (res.ok) {
+    msg.style.display = 'none';
+    document.getElementById('resena-autor').value = '';
+    document.getElementById('resena-comentario').value = '';
+    setStar(0);
+    await cargarResenas(platoActual);
+  } else {
+    msg.textContent = 'Error al publicar. Inténtalo de nuevo.';
+    msg.style.display = 'block';
+  }
+}
+
+function cerrarResenas(e) {
+  if (e.target === document.getElementById('resenas-modal')) cerrarResenasBtn();
+}
+function cerrarResenasBtn() {
+  document.getElementById('resenas-modal').classList.remove('open');
+}
+
+async function loadConfig() {
+  try {
+    const res = await fetch('/api/config');
+    const c = await res.json();
+    document.title = `Carta — ${c.nombre || 'Restaurante'}`;
+    document.getElementById('nav-logo').innerHTML = (c.nombre || 'Rest') + '<span>.</span>';
+    document.getElementById('chat-title').textContent = c.nombre || 'Asistente';
+    await renderCarta(c.carta || {});
+  } catch(e) { console.error(e); }
+}
+
+loadConfig();
+
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 40);
+  // Actualizar sidebar active según scroll
+  const secciones = ['entrantes', 'principales', 'postres'];
+  let actual = secciones[0];
+  for (const id of secciones) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) actual = id;
+  }
+  document.querySelectorAll('.sidebar-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + actual);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

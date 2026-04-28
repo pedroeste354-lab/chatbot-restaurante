@@ -30,3 +30,12 @@ CREATE TABLE IF NOT EXISTS clients (
   nombre TEXT,
   created_at TEXT DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS resenas (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  plato TEXT NOT NULL,
+  autor TEXT NOT NULL,
+  estrellas INTEGER NOT NULL CHECK(estrellas BETWEEN 1 AND 5),
+  comentario TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+);
