@@ -7,7 +7,7 @@
   <meta name="description" content="Restaurante" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=Inter:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=Inter:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="style.css" />
   <script>
     function toggleChat() { document.getElementById('chat-widget').classList.toggle('open'); }
@@ -21,8 +21,8 @@
       if (typeof sendChipMessage === 'function') sendChipMessage('Quiero reservar una mesa');
     }
     function toggleDireccion() {
-      const tipo = document.getElementById('checkout-tipo').value;
-      document.getElementById('checkout-direccion-group').style.display = tipo === 'domicilio' ? 'flex' : 'none';
+      document.getElementById('checkout-direccion-group').style.display =
+        document.getElementById('checkout-tipo').value === 'domicilio' ? 'flex' : 'none';
     }
     function closeCheckout() { document.getElementById('checkout-modal').classList.remove('open'); }
   </script>
@@ -38,9 +38,7 @@
     <a href="#contacto">Contacto</a>
   </nav>
   <div class="nav-actions">
-    <button class="btn-cart" onclick="toggleCart()">
-      🛒 Carrito <span id="cart-badge"></span>
-    </button>
+    <button class="btn-cart" onclick="toggleCart()">🛒 <span id="cart-badge"></span></button>
     <button class="btn-reservar-nav" onclick="openReserva()">Reservar mesa</button>
     <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menú">
       <span></span><span></span><span></span>
@@ -57,26 +55,46 @@
   <button class="btn-primary" onclick="openReserva(); toggleMobileNav()">Reservar mesa</button>
 </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-content">
+<!-- HERO FULL SCREEN -->
+<section class="hero-full">
+  <div class="hero-full-bg" id="hero-bg"></div>
+  <div class="hero-full-overlay"></div>
+  <div class="hero-full-content">
     <div class="hero-eyebrow" id="hero-eyebrow">Gastronomía</div>
     <h1 id="hero-title">Cocina que<br><em>enamora</em></h1>
-    <p class="hero-sub" id="hero-sub">Una experiencia gastronómica única donde cada plato es una historia. Reserva tu mesa y déjate sorprender.</p>
+    <p class="hero-sub" id="hero-sub">Una experiencia gastronómica única donde cada plato es una historia.</p>
     <div class="hero-ctas">
       <button class="btn-primary" onclick="openReserva()">Reservar mesa</button>
       <a href="/carta.html" class="btn-outline">Ver la carta</a>
     </div>
-    <div class="hero-scroll-hint">
-      <div class="scroll-line"></div>
-      <span>Descubrir</span>
-    </div>
   </div>
-  <div class="hero-visual">
-    <div class="hero-visual-bg"></div>
-    <div class="hero-visual-overlay"></div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Descubrir</span>
   </div>
 </section>
+
+<!-- BADGE CIRCLES (al estilo TATEL) -->
+<div class="badges-section">
+  <a href="/carta.html" class="badge-circle">
+    <span class="badge-text">CARTA</span>
+  </a>
+  <a href="/carta.html#entrantes" class="badge-circle">
+    <span class="badge-text">ENTRANTES</span>
+  </a>
+  <a href="/carta.html#principales" class="badge-circle">
+    <span class="badge-text">PRINCIPALES</span>
+  </a>
+  <a href="/carta.html#postres" class="badge-circle">
+    <span class="badge-text">POSTRES</span>
+  </a>
+  <a href="#" class="badge-circle badge-highlight" onclick="openReserva(); return false;">
+    <span class="badge-text">RESERVAR<br>MESA</span>
+  </a>
+  <a href="#contacto" class="badge-circle">
+    <span class="badge-text">CONTACTO</span>
+  </a>
+</div>
 
 <!-- FEATURES BAR -->
 <div class="features-bar">
@@ -103,18 +121,19 @@
   </div>
 </div>
 
-<!-- NOSOTROS -->
-<section id="nosotros">
-  <div class="nosotros-grid">
-    <div>
-      <div class="section-label">Nuestra historia</div>
-      <h2 class="section-title">Una pasión<br>hecha <em>restaurante</em></h2>
-      <p class="nosotros-text" id="nosotros-text">Cargando...</p>
-    </div>
+<!-- NOSOTROS con foto grande -->
+<section id="nosotros" class="nosotros-split">
+  <div class="nosotros-foto">
+    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=80" alt="Interior restaurante" loading="lazy" />
+  </div>
+  <div class="nosotros-texto">
+    <div class="section-label">Nuestra historia</div>
+    <h2 class="section-title">Una pasión<br>hecha <em>restaurante</em></h2>
+    <p class="nosotros-text" id="nosotros-text">Cargando...</p>
     <div class="nosotros-stats">
-      <div class="stat-box"><div class="stat-number" id="stat-anos">0</div><div class="stat-label">Años de experiencia</div></div>
-      <div class="stat-box"><div class="stat-number" id="stat-valoracion">0</div><div class="stat-label">Valoración media</div></div>
-      <div class="stat-box"><div class="stat-number" id="stat-reviews">0</div><div class="stat-label">Valoraciones</div></div>
+      <div class="stat-box"><div class="stat-number" id="stat-anos">0</div><div class="stat-label">Años</div></div>
+      <div class="stat-box"><div class="stat-number" id="stat-valoracion">0</div><div class="stat-label">Valoración</div></div>
+      <div class="stat-box"><div class="stat-number" id="stat-reviews">0</div><div class="stat-label">Reseñas</div></div>
       <div class="stat-box" id="stat-terraza-box" style="display:none"><div class="stat-number">🌿</div><div class="stat-label">Terraza</div></div>
     </div>
   </div>
@@ -168,16 +187,10 @@
 
 <!-- CART DRAWER -->
 <div id="cart-drawer">
-  <div class="cart-header">
-    <h3>Tu pedido</h3>
-    <button class="btn-close-cart" onclick="toggleCart()">✕</button>
-  </div>
+  <div class="cart-header"><h3>Tu pedido</h3><button class="btn-close-cart" onclick="toggleCart()">✕</button></div>
   <div id="cart-items"></div>
   <div class="cart-footer">
-    <div class="cart-total">
-      <span class="cart-total-label">Total</span>
-      <span class="cart-total-amount" id="cart-total-amount">0,00€</span>
-    </div>
+    <div class="cart-total"><span class="cart-total-label">Total</span><span class="cart-total-amount" id="cart-total-amount">0,00€</span></div>
     <button class="btn-checkout" onclick="openCheckout()">Finalizar pedido →</button>
   </div>
 </div>
@@ -185,10 +198,7 @@
 <!-- CHECKOUT MODAL -->
 <div id="checkout-modal">
   <div class="checkout-box">
-    <div class="checkout-header">
-      <h3>Finalizar pedido</h3>
-      <button class="btn-close-cart" onclick="closeCheckout()">✕</button>
-    </div>
+    <div class="checkout-header"><h3>Finalizar pedido</h3><button class="btn-close-cart" onclick="closeCheckout()">✕</button></div>
     <div class="checkout-body">
       <div class="checkout-summary">
         <div id="checkout-items-list"></div>
@@ -220,19 +230,11 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="global-toast"></div>
-
-<!-- CHAT BUBBLE -->
 <div id="chat-bubble" class="pulse" onclick="toggleChat()">💬</div>
-
-<!-- CHAT WIDGET -->
 <div id="chat-widget">
   <div class="chat-header">
-    <div>
-      <div class="chat-title" id="chat-title">Asistente</div>
-      <div class="chat-status">En línea</div>
-    </div>
+    <div><div class="chat-title" id="chat-title">Asistente</div><div class="chat-status">En línea</div></div>
     <button class="btn-close-chat" onclick="toggleChat()">✕</button>
   </div>
   <div id="chat-messages"></div>
@@ -255,7 +257,7 @@ async function loadConfig() {
     document.getElementById('nav-logo').innerHTML = (c.nombre || 'Rest') + '<span>.</span>';
     document.getElementById('hero-eyebrow').textContent = c.cocina || 'Gastronomía';
     document.getElementById('hero-title').innerHTML = `${c.nombre || 'Nuestro restaurante'}<br><em>te espera</em>`;
-    document.getElementById('hero-sub').textContent = (c.nosotros || '').substring(0, 120);
+    document.getElementById('hero-sub').textContent = (c.nosotros || '').substring(0, 100);
     document.getElementById('feature-horario-text').textContent = c.horario || '—';
     document.getElementById('feature-menu-text').textContent = c.menu_dia ? `${c.menu_dia.precio} — ${c.menu_dia.descripcion}` : '—';
     document.getElementById('feature-ubicacion-text').textContent = c.direccion || '—';
@@ -274,13 +276,14 @@ async function loadConfig() {
     if (c.google_maps_embed) document.getElementById('map-container').innerHTML = `<iframe src="${c.google_maps_embed}" allowfullscreen loading="lazy"></iframe>`;
     document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${c.nombre || 'Restaurante'}. Todos los derechos reservados.`;
     document.getElementById('chat-title').textContent = c.nombre || 'Asistente';
-  } catch(e) { console.error('Error cargando config:', e); }
+    if (c.hero_foto) document.getElementById('hero-bg').style.backgroundImage = `url('${c.hero_foto}')`;
+  } catch(e) { console.error(e); }
 }
 
 loadConfig();
 
 window.addEventListener('scroll', () => {
-  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 40);
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
 window.addEventListener('load', function() {
@@ -289,9 +292,13 @@ window.addEventListener('load', function() {
     gsap.utils.toArray('.reveal').forEach(el => {
       gsap.fromTo(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
     });
-    gsap.from('.hero h1', { opacity: 0, y: 40, duration: 1, delay: 0.2, ease: 'power3.out' });
-    gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 0.8, delay: 0.5, ease: 'power3.out' });
-    gsap.from('.hero-ctas', { opacity: 0, y: 20, duration: 0.8, delay: 0.7, ease: 'power3.out' });
+    gsap.from('.hero-full-content h1', { opacity: 0, y: 60, duration: 1.2, delay: 0.3, ease: 'power3.out' });
+    gsap.from('.hero-full-content .hero-eyebrow', { opacity: 0, y: 20, duration: 0.8, delay: 0.1, ease: 'power3.out' });
+    gsap.from('.hero-full-content .hero-sub', { opacity: 0, y: 20, duration: 0.8, delay: 0.7, ease: 'power3.out' });
+    gsap.from('.hero-full-content .hero-ctas', { opacity: 0, y: 20, duration: 0.8, delay: 0.9, ease: 'power3.out' });
+    gsap.utils.toArray('.badge-circle').forEach((el, i) => {
+      gsap.fromTo(el, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, delay: i * 0.07, ease: 'back.out(1.4)', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
+    });
   }
   if (typeof Lenis !== 'undefined' && typeof gsap !== 'undefined') {
     const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
